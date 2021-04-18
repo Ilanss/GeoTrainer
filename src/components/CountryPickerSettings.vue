@@ -2,33 +2,26 @@
     <div>
       <h2>Options Country Picker</h2>
         <h3>Nombre de pays</h3>
-        <input type="radio" id="15country" name="nbrCountry" value="15" v-model="settings.gamelength">
-        <label for="15country">15</label>
-        <input type="radio" id="30country" name="nbrCountry" value="30" v-model="settings.gamelength">
-        <label for="30country">30</label>
-        <input type="radio" id="45country" name="nbrCountry" value="45" v-model="settings.gamelength">
-        <label for="45country">45</label>
-        <input type="radio" id="allCountry" name="nbrCountry" value="all" v-model="settings.gamelength">
-        <label for="allCountry">tous</label>
+        <b-form-input name="gamelength" type="range" v-model="settings.gamelength" min="10" :max="settings.countryCount"></b-form-input>
 
         <div>
             <h3>Région(s)</h3>
-            <input type="checkbox" id="Europe" name="Europe" value="Europe" v-model="settings.regions.Europe">
+            <input type="checkbox" id="Europe" name="Europe" value="Europe" v-model="settings.regions.Europe" v-on:change="countryCount">
             <label for="Europe"> Europe</label>
-            <input type="checkbox" id="Africa" name="Africa" value="Africa" v-model="settings.regions.Africa">
+            <input type="checkbox" id="Africa" name="Africa" value="Africa" v-model="settings.regions.Africa" v-on:change="countryCount">
             <label for="Africa"> Afrique</label>
-            <input type="checkbox" id="Americas" name="Americas" value="Americas" v-model="settings.regions.Americas">
+            <input type="checkbox" id="Americas" name="Americas" value="Americas" v-model="settings.regions.Americas" v-on:change="countryCount">
             <label for="Americas"> Amériques</label>
-            <input type="checkbox" id="Asia" name="Asia" value="Asia" v-model="settings.regions.Asia">
+            <input type="checkbox" id="Asia" name="Asia" value="Asia" v-model="settings.regions.Asia" v-on:change="countryCount">
             <label for="Asia"> Asie</label>
-            <input type="checkbox" id="Oceania" name="Oceania" value="Oceania" v-model="settings.regions.Oceania">
+            <input type="checkbox" id="Oceania" name="Oceania" value="Oceania" v-model="settings.regions.Oceania" v-on:change="countryCount">
             <label for="Oceania"> Océanie</label><br>
         </div>
 
-        <div class="h2 mb-0" v-b-toggle="'extras'"><h3>Autres options <b-icon-arrow-bar-down></b-icon-arrow-bar-down></h3></div>
+        <div class="h2" v-b-toggle="'extras'"><h3>Autres options <b-icon-chevron-down width="16" height="16"></b-icon-chevron-down></h3></div>
         <b-collapse id="extras">
         <div>
-            <input type="checkbox" id="streetview" name="streetview" value="streetview" v-model="settings.streetview">
+            <input type="checkbox" id="streetview" name="streetview" value="streetview" v-model="settings.streetview" v-on:change="countryCount">
             <label for="streetview"> Uniquement les pays StreetView</label><br>
         </div>
 
@@ -58,7 +51,7 @@
         </div>
 
         <div>
-            <input type="checkbox" id="smallCountry" name="smallCountry" value="smallCountry" v-model="settings.smallCountries">
+            <input type="checkbox" id="smallCountry" name="smallCountry" value="smallCountry" v-model="settings.smallCountries" v-on:change="countryCount">
             <label for="smallCountry"> Inclure les petits pays</label><br>
         </div>
         </b-collapse>
@@ -79,6 +72,7 @@ export default {
             skip: false,
             redoWrong: false,
             smallCountries: false,
+            countryCount:20,
             regions:{
                 Europe:false,
                 Africa:false,
@@ -98,13 +92,29 @@ export default {
           settings.skip = this.settings.skip;
           settings.redoWrong = this.settings.redoWrong;
           settings.smallCountries = this.settings.smallCountries;
-          settings.regions = [];
+          settings.regions = this.prepareRegion();
+          /*settings.regions = [];
           Object.entries(this.settings.regions).forEach(entry => {
               const [key, value] = entry;
               if(value){ settings.regions.push(key) }
-          });
+          });*/
           this.$store.dispatch('startGame', settings);
           this.$router.push('Game')
+      },
+      countryCount: function () {
+          this.settings.countryCount = this.$store.getters.countryFiltered(this.prepareRegion(), this.settings.streetview, this.settings.smallCountries).length;
+          (this.settings.gamelength > this.settings.countryCount) ? this.settings.gamelength = this.settings.countryCount : null;
+      },
+      prepareRegion: function () {
+          let regions = [];
+          Object.entries(this.settings.regions).forEach(entry => {
+              const [key, value] = entry;
+              if(value){ regions.push(key) }
+          });
+          return regions;
+      },
+      sendSetting: function (setting, value) {
+          this.$store.dispatch('setSetting', setting, value)
       }
   },
     mounted() {
@@ -124,6 +134,7 @@ export default {
         if(!tempRegion.Oceania){tempRegion.Oceania = false}
         if(!tempRegion.Americas){tempRegion.Americas = false}
         this.settings.regions = tempRegion;
+        this.countryCount();
     }
 }
 </script>

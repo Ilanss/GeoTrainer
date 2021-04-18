@@ -111,6 +111,36 @@ export default {
             commit('SET_GAMETYPE', gamemode)
         },
 
+        setSetting ({commit}, setting, value) {
+            let settingToSet;
+            switch (setting) {
+                case "gamelength":
+                    settingToSet = "SET_GAMELENGTH";
+                    break;
+                case "streetview":
+                    settingToSet = "SET_STREETVIEW";
+                    break;
+                case "flags":
+                    settingToSet = "SET_FLAG";
+                    break;
+                case "skip":
+                    settingToSet = "SET_SKIP";
+                    break;
+                case "redoWrong":
+                    settingToSet = "SET_REDOWRONG";
+                    break;
+                case "smallCountries":
+                    settingToSet = "SET_SMALLCOUNTRIES";
+                    break;
+                case "regions":
+                    settingToSet = "SET_REGIONS";
+                    break;
+                default:
+                    break;
+            }
+            commit(settingToSet, value);
+        },
+
         startGame ({commit}, settings) {
             commit('SET_GAMELENGTH', settings.gamelength);
             commit('SET_FLAG', settings.flags);
@@ -141,6 +171,6 @@ export default {
             settings.excludedList = state.excludedList;
 
             return settings;
-        }
+        },
     }
 }
