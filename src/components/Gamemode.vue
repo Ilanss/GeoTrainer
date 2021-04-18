@@ -1,10 +1,20 @@
 <template>
     <div>
-      <h2>Mode de jeu</h2>
-      <input type="radio" id="countryPicker" name="drone" value="countryPicker" v-model="gamemode" v-on:click="$emit('gamemode','countryPicker')">
-      <label for="countryPicker">Country Picker</label>
-      <input type="radio" id="flagGuesser" name="drone" value="flagGuesser" v-model="gamemode" v-on:click="$emit('gamemode','flagGuesser')">
-      <label for="flagGuesser">Flag Guesser</label>
+      <h1>Mode de jeu</h1>
+        <v-layout class="justify-center">
+            <v-radio-group v-model="gamemode" row>
+                <v-radio label="Country Picker" id="countryPicker" value="countryPicker" v-on:click="$emit('gamemode','countryPicker')"></v-radio>
+
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <span v-bind="attrs" v-on="on">
+                            <v-radio label="Flag Guesser" id="flagGuesser" value="flagGuesser" v-on:click="$emit('gamemode','flagGuesser')" disabled></v-radio>
+                        </span>
+                    </template>
+                    <span>Coming soon</span>
+                </v-tooltip>
+            </v-radio-group>
+        </v-layout>
     </div>
 </template>
 

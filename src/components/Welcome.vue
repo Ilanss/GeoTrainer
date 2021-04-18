@@ -4,7 +4,7 @@
     <p>
       Si tu veux t'entrainer à reconnaitre les drapeaux de pays et apprendre à les placer sur la carte tu es au bon endroit.
     </p>
-    <router-link to="/settings"><button>Jouer</button></router-link>
+    <router-link to="/settings"><v-btn color="primary">Jouer</v-btn></router-link>
 
     <h3>Mode de jeu disponible</h3>
     <ul>

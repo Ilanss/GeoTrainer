@@ -1,30 +1,50 @@
 <template>
     <div id="game">
-        <p>{{current + 1}}/{{country.length}}</p>
-        <h2>{{country[current].countryName}} <img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2>
-        <div>
-            <b-modal id="endgame" ref="endgame" title="Bravo!">
-
-                <template>
-                    <p>Tu es arrivé un bout du quiz avec un score de {{score}} !</p>
+            <v-row class="justify-center"><p>{{current + 1}}/{{country.length}}</p></v-row>
+        <v-row class="justify-center"><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-row>
+            <Map />
+        <v-row justify="center">
+            <v-dialog
+                    v-model="dialog"
+                    persistent
+                    max-width="290"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                            color="primary"
+                            dark
+                            v-bind="attrs"
+                            v-on="on"
+                    >
+                    </v-btn>
                 </template>
-
-                <template #modal-footer="{ ok }">
-                    <!-- Emulate built in modal footer ok and cancel button actions -->
-                    <router-link to="/settings"><b-button variant="secondary" @click="cancel()">
-                        Options
-                    </b-button></router-link>
-                    <b-button variant="primary" @click="newgame(), ok()">
-                        Rejouer
-                    </b-button>
-                </template>
-
-
-
-                <p class="my-4"></p>
-            </b-modal>
-        </div>
-        <Map />
+                <v-card>
+                    <v-card-title class="headline">
+                        Bravo !
+                    </v-card-title>
+                    <v-card-text>
+                        Tu es arrivé un bout du quiz avec un score de {{score}} !
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                                color="green darken-1"
+                                text
+                                @click="dialog = false"
+                        >
+                            <router-link to="/settings">Options</router-link>
+                        </v-btn>
+                        <v-btn
+                                color="green darken-1"
+                                text
+                                @click="dialog = false, newgame()"
+                        >
+                            Rejouer
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
@@ -44,10 +64,11 @@
                 current:0,
                 countryFailed: [],
                 flag: true,
+                names: true,
                 redoWrong: true,
                 score: 0,
                 skip: false,
-                grey: true,
+                dialog: false,
             }
         },
         computed: {
@@ -59,24 +80,20 @@
             countryCheck: function (event) {
                 if(event.path[0].classList.contains('grey')) {return;}
                 if(event.path[0].classList.contains('true')) {return;}
-                let current = this.current;
-                if(event.path[0].id == this.country[current].alpha2Code){
+
+                // Si la réponse est juste
+
+                if(event.path[0].id == this.country[this.current].alpha2Code){
                     event.path[0].classList.add("true");
                     document.querySelectorAll('.wrong').forEach(item => item.classList.remove('wrong'));
-                    this.current++;
                     this.score++;
-                    if(current +1 >= this.country.length){
-                        if(this.redoWrong && this.countryFailed.length > 0){
-                            this.country = this.countryFailed;
-                            this.current = 0;
-                            document.querySelectorAll('.true').forEach(item => item.classList.remove('true'));
-                            this.countryFailed = [];
-                        }
-                        else {
-                            this.endgame();
-                        }
-                    }
+                    console.log(this.current);
+                    console.log(this.country.length);
+                    this.current++;
                 }
+
+                // Si la réponse est fausse
+
                 else{
                     console.log(Object.values(this.countryFailed))
                     if(this.countryFailed.filter(x => x.countryName == this.country[this.current].countryName).length > 0){
@@ -86,12 +103,36 @@
                         this.countryFailed.push(this.country[this.current]);
                         this.score--;
                     }
-                    event.path[0].classList.add("wrong");
+
+                    if(this.skip) {
+                        document.getElementById(this.country[this.current].alpha2Code).classList.add('true');
+                        this.current++;
+                    }
+                    else {
+                        event.path[0].classList.add("wrong");
+                    }
+                }
+
+                // Dans tout les cas test si fin de partie
+
+                if(this.current +1 >= this.country.length){
+                    // Si il faut refaire les pays faux et qu'il y en a
+                    if(this.redoWrong && this.countryFailed.length > 0){
+                        this.country = this.countryFailed;
+                        this.current = 0;
+                        document.querySelectorAll('.true').forEach(item => item.classList.remove('true'));
+                        this.countryFailed = [];
+
+                    }
+                    // Sinon fin de partie
+                    else {
+                        this.endgame();
+                    }
                 }
             },
 
             endgame: function() {
-                this.$refs['endgame'].show()
+                this.dialog = true;
             },
 
             newgame: function() {
@@ -109,9 +150,12 @@
             this.newgame();
             let settings = this.$store.getters.getGameSettings;
             this.excludedList = settings.excludedList;
-            console.log(settings.excludedList)
-            settings.excludedList.forEach(x => document.getElementById(x).classList.add("grey"))
+            console.log(settings.excludedList);
+            if(settings.grey) {
+                settings.excludedList.forEach(x => document.getElementById(x).classList.add("grey"));
+            }
             this.flag = settings.flags;
+            this.names = settings.names;
             this.redoWrong = settings.redoWrong;
             this.skip = settings.skip;
             document.querySelectorAll('.land').forEach(item => item.addEventListener("click", this.countryCheck));
@@ -131,6 +175,6 @@
         height: 100%;
     }
     #flag {
-        height: 25px;
+        height: 35px;
     }
 </style>

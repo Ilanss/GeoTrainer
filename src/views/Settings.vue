@@ -1,8 +1,15 @@
 <template>
     <div class="settings">
-        <Gamemode v-on:gamemode="setGamemode"/>
-        <FlagGuesserSettings v-if="gamemode == 'flagGuesser'"></FlagGuesserSettings>
-        <CountryPickerSettings v-if="gamemode == 'countryPicker'"></CountryPickerSettings>
+        <v-container>
+            <v-row justify="space-around">
+                <v-card width="800">
+                    <Gamemode v-on:gamemode="setGamemode"/>
+                    <FlagGuesserSettings v-if="gamemode == 'flagGuesser'"></FlagGuesserSettings>
+                    <CountryPickerSettings v-if="gamemode == 'countryPicker'"></CountryPickerSettings>
+
+                </v-card>
+            </v-row>
+        </v-container>
     </div>
 </template>
 

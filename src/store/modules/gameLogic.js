@@ -8,11 +8,13 @@ export default {
         excludedList:[],
         points:0,
         flag:true,
+        names: true,
         streetviewOnly:true,
         redoWrong:false,
         region: ['Asia', 'Europe', 'Americas', 'Oceania'],
         smallCountries: false,
         skip: false,
+        grey: false,
     },
     mutations: {
         SET_STREAKLENGTH(state, length) {
@@ -57,6 +59,14 @@ export default {
 
         SET_EXCLUDEDLIST(state, excludedList) {
             state.excludedList = excludedList;
+        },
+
+        SET_NAMES(state, names) {
+            state.names = names;
+        },
+
+        SET_GREY(state, grey) {
+            state.grey = grey;
         }
 
     },
@@ -144,11 +154,13 @@ export default {
         startGame ({commit}, settings) {
             commit('SET_GAMELENGTH', settings.gamelength);
             commit('SET_FLAG', settings.flags);
+            commit('SET_NAMES', settings.names);
             commit('SET_STREETVIEW', settings.streetview);
             commit('SET_REDOWRONG', settings.redoWrong);
             commit('SET_SMALLCOUNTRIES', settings.smallCountries);
             commit('SET_REGIONS', settings.regions);
             commit('SET_SKIP', settings.skip);
+            commit('SET_GREY', settings.grey);
         }
 
     },
@@ -164,10 +176,12 @@ export default {
             settings.gamelength = state.gameLength;
             settings.streetview = state.streetviewOnly;
             settings.flags = state.flag;
+            settings.names = state.names;
             settings.skip = state.skip;
             settings.redoWrong = state.redoWrong;
             settings.smallCountries = state.smallCountries;
             settings.regions = state.region;
+            settings.grey = state.grey;
             settings.excludedList = state.excludedList;
 
             return settings;

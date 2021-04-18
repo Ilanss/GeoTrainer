@@ -2,60 +2,42 @@
     <div>
       <h2>Options Country Picker</h2>
         <h3>Nombre de pays</h3>
-        <b-form-input name="gamelength" type="range" v-model="settings.gamelength" min="10" :max="settings.countryCount"></b-form-input>
+        <v-slider name="gamelength" step="5" thumb-label="always" v-model="settings.gamelength" min="10" :max="settings.countryCount"></v-slider>
 
-        <div>
-            <h3>Région(s)</h3>
-            <input type="checkbox" id="Europe" name="Europe" value="Europe" v-model="settings.regions.Europe" v-on:change="countryCount">
-            <label for="Europe"> Europe</label>
-            <input type="checkbox" id="Africa" name="Africa" value="Africa" v-model="settings.regions.Africa" v-on:change="countryCount">
-            <label for="Africa"> Afrique</label>
-            <input type="checkbox" id="Americas" name="Americas" value="Americas" v-model="settings.regions.Americas" v-on:change="countryCount">
-            <label for="Americas"> Amériques</label>
-            <input type="checkbox" id="Asia" name="Asia" value="Asia" v-model="settings.regions.Asia" v-on:change="countryCount">
-            <label for="Asia"> Asie</label>
-            <input type="checkbox" id="Oceania" name="Oceania" value="Oceania" v-model="settings.regions.Oceania" v-on:change="countryCount">
-            <label for="Oceania"> Océanie</label><br>
-        </div>
+        <h3>Région(s)</h3>
+        <v-layout row wrap class="justify-center">
+            <v-checkbox type="checkbox" label="Europe" id="Europe" name="Europe" v-model="settings.regions.Europe" v-on:change="countryCount"></v-checkbox>
+            <v-checkbox type="checkbox" label="Afrique" id="Africa" name="Africa" v-model="settings.regions.Africa" v-on:change="countryCount"></v-checkbox>
+            <v-checkbox type="checkbox" label="Amériques" id="Americas" name="Americas" v-model="settings.regions.Americas" v-on:change="countryCount"></v-checkbox>
+            <v-checkbox type="checkbox" label="Asie" id="Asia" name="Asia" v-model="settings.regions.Asia" v-on:change="countryCount"></v-checkbox>
+            <v-checkbox type="checkbox" label="Océanie" id="Oceania" name="Oceania" v-model="settings.regions.Oceania" v-on:change="countryCount"></v-checkbox>
+        </v-layout>
 
-        <div class="h2" v-b-toggle="'extras'"><h3>Autres options <b-icon-chevron-down width="16" height="16"></b-icon-chevron-down></h3></div>
-        <b-collapse id="extras">
-        <div>
-            <input type="checkbox" id="streetview" name="streetview" value="streetview" v-model="settings.streetview" v-on:change="countryCount">
-            <label for="streetview"> Uniquement les pays StreetView</label><br>
-        </div>
+        <h3>Mode des pays</h3>
+        <v-layout class="justify-center">
+            <v-radio-group v-model="settings.titleMode" row>
+                <v-radio label="Noms" value="Names"></v-radio>
+                <v-radio label="Drapeaux" value="Flags"></v-radio>
+                <v-radio label="Noms + Drapeaux" value="NamesFlags"></v-radio>
+            </v-radio-group>
+        </v-layout>
 
-        <div>
-            <input type="checkbox" id="flags" name="flags" value="flags" v-model="settings.flags">
-            <label for="flags"> Afficher les drapeaux</label><br>
-        </div>
-
-        <div>
-            <input type="checkbox" id="flagOnly" name="flagOnly" value="flagOnly" v-model="settings.flagOnly">
-            <label for="flagOnly"> Only flags</label><br>
-        </div>
-
-        <div>
-            <input type="checkbox" id="grey" name="grey" value="grey" v-model="settings.grey">
-            <label for="grey"> Grey excluded countries</label><br>
-        </div>
-
-        <div>
-            <input type="checkbox" id="skip" name="skip" value="skip" v-model="settings.skip">
-            <label for="skip"> Passer au suivant avec une mauvaise réponse</label><br>
-        </div>
-
-        <div>
-            <input type="checkbox" id="redoWrong" name="redoWrong" value="redoWrong" v-model="settings.redoWrong">
-            <label for="redoWrong"> Refaire les pays faux</label><br>
-        </div>
-
-        <div>
-            <input type="checkbox" id="smallCountry" name="smallCountry" value="smallCountry" v-model="settings.smallCountries" v-on:change="countryCount">
-            <label for="smallCountry"> Inclure les petits pays</label><br>
-        </div>
-        </b-collapse>
-        <button v-on:click="startGame">Jouer</button>
+        <v-expansion-panels>
+            <v-expansion-panel><v-expansion-panel-header>
+                Autres options
+            </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <v-checkbox type="checkbox" id="streetview" label="Uniquement les pays StreetView" name="streetview" v-model="settings.streetview" v-on:change="countryCount"></v-checkbox>
+                    <v-checkbox type="checkbox" id="grey" label="Griser les pays exclus" name="grey" v-model="settings.grey"></v-checkbox>
+                    <v-checkbox type="checkbox" id="skip" label="Passer au suivant avec une mauvaise réponse" name="skip" v-model="settings.skip"></v-checkbox>
+                    <v-checkbox type="checkbox" id="redoWrong" label="Refaire les pays faux" name="redoWrong" v-model="settings.redoWrong"></v-checkbox>
+                    <v-checkbox type="checkbox" id="smallCountry" label="Inclure les petits pays" name="smallCountry" v-model="settings.smallCountries" v-on:change="countryCount"></v-checkbox>
+                </v-expansion-panel-content></v-expansion-panel>
+        </v-expansion-panels>
+        <!--<div class="h2" v-b-toggle="'extras'"><h3>Autres options <b-icon-chevron-down width="16" height="16"></b-icon-chevron-down></h3></div>-->
+        <!--<b-collapse id="extras">-->
+        <!--</b-collapse>-->
+        <v-btn v-on:click="startGame" color="primary">Jouer</v-btn>
     </div>
 </template>
 
@@ -67,12 +49,12 @@ export default {
         settings: {
             gamelength: 15,
             streetview:false,
-            flags: false,
-            flagOnly: false,
+            titleMode: "Names",
             skip: false,
             redoWrong: false,
             smallCountries: false,
             countryCount:20,
+            grey: false,
             regions:{
                 Europe:false,
                 Africa:false,
@@ -88,9 +70,27 @@ export default {
           let settings = {};
           settings.gamelength = this.settings.gamelength;
           settings.streetview = this.settings.streetview;
-          settings.flags = this.settings.flags;
+          switch (this.settings.titleMode) {
+              case "Names":
+                  settings.flags = false;
+                  settings.names = true;
+                  break;
+              case "Flags":
+                  settings.flags = true;
+                  settings.names = false;
+                  break;
+              case "NamesFlags":
+                  settings.flags = true;
+                  settings.names = true;
+                  break;
+              default:
+                  settings.flags = true;
+                  settings.names = true;
+                  break;
+          }
           settings.skip = this.settings.skip;
           settings.redoWrong = this.settings.redoWrong;
+          settings.grey = this.settings.grey;
           settings.smallCountries = this.settings.smallCountries;
           settings.regions = this.prepareRegion();
           /*settings.regions = [];
@@ -141,16 +141,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  padding: 0;
-  list-style-type: none;
-}
-li {
-  margin: 0 10px;
-}
 a {
   color: #42b983;
 }
