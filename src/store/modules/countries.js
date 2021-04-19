@@ -20137,7 +20137,7 @@ export default {
             if(smallCountries == false) {
                 filter = filter.filter(country => country.smallCountry == "false")
             }
-            return filter.map(x => ({alpha2Code: x.alpha2Code, countryName: x.translations.fr, flag: x.flag}))
+            return filter.map(x => ({alpha2Code: x.alpha2Code, countryName: x.translations.fr, flag: x.flag, capital: x.capital, tldn: x.topLevelDomain}))
         }
     }
 }

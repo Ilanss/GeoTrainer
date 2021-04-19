@@ -32,6 +32,8 @@
                     <v-checkbox type="checkbox" id="skip" label="Passer au suivant avec une mauvaise réponse" name="skip" v-model="settings.skip"></v-checkbox>
                     <v-checkbox type="checkbox" id="redoWrong" label="Refaire les pays faux" name="redoWrong" v-model="settings.redoWrong"></v-checkbox>
                     <v-checkbox type="checkbox" id="smallCountry" label="Inclure les petits pays" name="smallCountry" v-model="settings.smallCountries" v-on:change="countryCount"></v-checkbox>
+                    <v-checkbox type="checkbox" id="capital" label="Mode capitale" name="capital" v-model="settings.capital"></v-checkbox>
+                    <v-checkbox type="checkbox" id="tldn" label="Mode nom de domaine" name="tldn" v-model="settings.tldn"></v-checkbox>
                 </v-expansion-panel-content></v-expansion-panel>
         </v-expansion-panels>
         <!--<div class="h2" v-b-toggle="'extras'"><h3>Autres options <b-icon-chevron-down width="16" height="16"></b-icon-chevron-down></h3></div>-->
@@ -55,6 +57,8 @@ export default {
             smallCountries: false,
             countryCount:20,
             grey: false,
+            capital: false,
+            tldn: false,
             regions:{
                 Europe:false,
                 Africa:false,
@@ -91,6 +95,8 @@ export default {
           settings.skip = this.settings.skip;
           settings.redoWrong = this.settings.redoWrong;
           settings.grey = this.settings.grey;
+          settings.capital = this.settings.capital;
+          settings.tldn = this.settings.tldn;
           settings.smallCountries = this.settings.smallCountries;
           settings.regions = this.prepareRegion();
           /*settings.regions = [];
@@ -122,6 +128,8 @@ export default {
         this.settings.gamelength = settings.gamelength;
         this.settings.streetview = settings.streetview;
         this.settings.flags = settings.flags;
+        this.settings.capital = settings.capital;
+        this.settings.tldn = settings.tldn;
         this.settings.skip = settings.skip;
         this.settings.redoWrong = settings.redoWrong;
         this.settings.smallCountries = settings.smallCountries;

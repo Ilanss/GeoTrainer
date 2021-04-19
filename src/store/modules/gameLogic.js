@@ -14,6 +14,8 @@ export default {
         region: ['Asia', 'Europe', 'Americas', 'Oceania'],
         smallCountries: false,
         skip: false,
+        capital: false,
+        tldn: false,
         grey: false,
     },
     mutations: {
@@ -67,9 +69,18 @@ export default {
 
         SET_GREY(state, grey) {
             state.grey = grey;
+        },
+
+        SET_CAPITAL(state, capital) {
+            state.capital = capital;
+        },
+
+        SET_TLDN(state, tldn) {
+            state.tldn = tldn;
         }
 
     },
+
     actions: {
         pickCountries ({commit, rootGetters, state, dispatch}) {
             let countriesList = rootGetters.countryFiltered(state.region, state.streetviewOnly, state.smallCountries);
@@ -142,8 +153,14 @@ export default {
                 case "smallCountries":
                     settingToSet = "SET_SMALLCOUNTRIES";
                     break;
+                case "capital":
+                    settingToSet = "SET_CAPITAL";
+                    break;
                 case "regions":
                     settingToSet = "SET_REGIONS";
+                    break;
+                case "tldn":
+                    settingToSet = "SET_TLDN";
                     break;
                 default:
                     break;
@@ -158,7 +175,9 @@ export default {
             commit('SET_STREETVIEW', settings.streetview);
             commit('SET_REDOWRONG', settings.redoWrong);
             commit('SET_SMALLCOUNTRIES', settings.smallCountries);
+            commit('SET_CAPITAL', settings.capital);
             commit('SET_REGIONS', settings.regions);
+            commit('SET_TLDN', settings.tldn);
             commit('SET_SKIP', settings.skip);
             commit('SET_GREY', settings.grey);
         }
@@ -178,6 +197,8 @@ export default {
             settings.flags = state.flag;
             settings.names = state.names;
             settings.skip = state.skip;
+            settings.capital = state.capital;
+            settings.tldn = state.tldn;
             settings.redoWrong = state.redoWrong;
             settings.smallCountries = state.smallCountries;
             settings.regions = state.region;

@@ -11,7 +11,12 @@
         >
             <v-app-bar-nav-icon @click.stop="toggleMenu"></v-app-bar-nav-icon>
 
-            <v-toolbar-title><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-toolbar-title>
+            <v-toolbar-title><h2>
+                <span v-if="names">{{country[current].countryName}} </span>
+                <span v-else-if="capital">{{country[current].capital}} </span>
+                <span v-else-if="tldn">{{country[current].tldn[0]}} </span>
+                <img v-if="flag" id="flag" v-bind:src="country[current].flag" alt="">
+            </h2></v-toolbar-title>
 
             <v-spacer></v-spacer>
 
@@ -77,6 +82,8 @@
                 flag: true,
                 names: true,
                 redoWrong: true,
+                capital: false,
+                tldn: false,
                 score: 0,
                 skip: false,
                 dialog: false,
@@ -163,6 +170,8 @@
             }
             this.flag = settings.flags;
             this.names = settings.names;
+            this.capital = settings.capital;
+            this.tldn = settings.tldn;
             this.redoWrong = settings.redoWrong;
             this.skip = settings.skip;
             document.querySelectorAll('.land').forEach(item => item.addEventListener("click", this.countryCheck));
