@@ -4,7 +4,9 @@
     <p>
       Si tu veux t'entrainer à reconnaitre les drapeaux de pays et apprendre à les placer sur la carte tu es au bon endroit.
     </p>
-    <router-link to="/settings"><v-btn color="primary">Jouer</v-btn></router-link>
+    <router-link to="/settings"><v-btn color="primary">Jouer</v-btn></router-link><br>
+    <router-link to="/settings"><v-btn color="primary">Préférences</v-btn></router-link><br>
+    <router-link to="/about"><v-btn color="primary">Crédits</v-btn></router-link>
 
     <h3>Mode de jeu disponible</h3>
     <ul>
@@ -25,9 +27,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
 ul {
   padding: 0;
   list-style-type: none;

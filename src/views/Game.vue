@@ -1,23 +1,34 @@
 <template>
-    <div id="game">
-            <v-row class="justify-center"><p>{{current + 1}}/{{country.length}}</p></v-row>
-        <v-row class="justify-center"><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-row>
-            <Map />
+    <v-container id="game" fluid>
+        <!--<v-row class="justify-center" no-gutter>
+            <v-col class="justify-center"><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-col>
+            <v-col class="justify-center"><p>{{current + 1}}/{{country.length}}</p></v-col>
+        </v-row>-->
+        <v-app-bar
+                app
+                dark
+                color="primary"
+        >
+            <v-app-bar-nav-icon @click.stop="toggleMenu"></v-app-bar-nav-icon>
+
+            <v-toolbar-title><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <p>{{current + 1}}/{{country.length}}</p>
+
+
+        </v-app-bar>
+
+        <Map />
+
+
         <v-row justify="center">
             <v-dialog
                     v-model="dialog"
                     persistent
                     max-width="290"
             >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                            color="primary"
-                            dark
-                            v-bind="attrs"
-                            v-on="on"
-                    >
-                    </v-btn>
-                </template>
                 <v-card>
                     <v-card-title class="headline">
                         Bravo !
@@ -45,7 +56,7 @@
                 </v-card>
             </v-dialog>
         </v-row>
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -163,7 +174,8 @@
 
 <style>
     #game {
-        height: 80vh;
+        height: 89vh;
+        margin-top: 0px;
         position: relative;
     }
     svg {

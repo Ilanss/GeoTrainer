@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import countries from './modules/countries'
 import gameLogic from "./modules/gameLogic";
+import appStatus from "./modules/appStatus";
 
 Vue.use(Vuex)
 
@@ -14,6 +15,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    countries, gameLogic
+    countries, gameLogic, appStatus
   }
 })

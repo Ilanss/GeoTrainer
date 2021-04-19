@@ -1,15 +1,13 @@
 <template>
+    <div>
+    <TopToolbar></TopToolbar>
+
     <div class="settings">
-        <v-container>
-            <v-row justify="space-around">
-                <v-card width="800">
                     <Gamemode v-on:gamemode="setGamemode"/>
                     <FlagGuesserSettings v-if="gamemode == 'flagGuesser'"></FlagGuesserSettings>
                     <CountryPickerSettings v-if="gamemode == 'countryPicker'"></CountryPickerSettings>
 
-                </v-card>
-            </v-row>
-        </v-container>
+    </div>
     </div>
 </template>
 
@@ -18,13 +16,15 @@
     import Gamemode from "../components/Gamemode";
     import FlagGuesserSettings from "../components/FlagGuesserSettings";
     import CountryPickerSettings from "../components/CountryPickerSettings";
+    import TopToolbar from "../components/TopToolbar";
 
     export default {
         name: 'Settings',
         components: {
             Gamemode,
             FlagGuesserSettings,
-            CountryPickerSettings
+            CountryPickerSettings,
+            TopToolbar
         },
         data () {
             return {
