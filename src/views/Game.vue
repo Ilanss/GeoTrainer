@@ -87,15 +87,12 @@
                     event.path[0].classList.add("true");
                     document.querySelectorAll('.wrong').forEach(item => item.classList.remove('wrong'));
                     this.score++;
-                    console.log(this.current);
-                    console.log(this.country.length);
                     this.current++;
                 }
 
                 // Si la réponse est fausse
 
                 else{
-                    console.log(Object.values(this.countryFailed))
                     if(this.countryFailed.filter(x => x.countryName == this.country[this.current].countryName).length > 0){
                         console.log("Already in failed list")
                     }
@@ -150,7 +147,6 @@
             this.newgame();
             let settings = this.$store.getters.getGameSettings;
             this.excludedList = settings.excludedList;
-            console.log(settings.excludedList);
             if(settings.grey) {
                 settings.excludedList.forEach(x => document.getElementById(x).classList.add("grey"));
             }

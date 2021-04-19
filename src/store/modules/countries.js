@@ -20103,26 +20103,21 @@ export default {
         allCountriesNames: state => (streetview) => {
             let filter = state;
             if(streetview){
-                console.log(streetview)
                 filter = filter.filter(country => country.streetview == "false")
             }
             return filter.map(x => ({alpha2Code: x.alpha2Code, countryName: x.name}));
         },
         countryFromRegion: (state) => (region, streetview) => {
-            console.log(region);
             let filter = [];
             let prefilter = [];
             region.forEach(function(region) {
                 prefilter = state.filter(country => country.region == region);
-                console.log(prefilter)
                 prefilter.forEach(item => filter.push(item))
                 //filter.push(prefilter)
             })
             if(streetview){
-                console.log(streetview)
                 filter = filter.filter(country => country.streetview == "false")
             }
-            console.log(filter)
 
             /*let filter = state.filter(country => country.region == region)
             console.log(filter)*/
@@ -20136,16 +20131,13 @@ export default {
                 prefilter = state.filter(country => country.region == region);
                 prefilter.forEach(item => filter.push(item))
             })
-            console.log(streetview)
             if(streetview){
                 filter = filter.filter(country => country.streetview == "true")
             }
             if(smallCountries == false) {
                 filter = filter.filter(country => country.smallCountry == "false")
             }
-            console.log(filter.map(x => ({alpha2Code: x.alpha2Code, countryName: x.translations.fr, flag: x.flag, streetview: x.streetview})))
             return filter.map(x => ({alpha2Code: x.alpha2Code, countryName: x.translations.fr, flag: x.flag}))
-            //return state.map(x => ({alpha2Code: x.alpha2Code, countryName: x.name}));
         }
     }
 }

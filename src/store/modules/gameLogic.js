@@ -72,12 +72,12 @@ export default {
     },
     actions: {
         pickCountries ({commit, rootGetters, state, dispatch}) {
-            console.log(state.streetviewOnly)
             let countriesList = rootGetters.countryFiltered(state.region, state.streetviewOnly, state.smallCountries);
-            let length = countriesList.length;
+            let length = countriesList.length-1;
 
             dispatch('setExcludeList', countriesList);
 
+            //console.log(countriesList)
             let i = 0;
             let countryPicked;
             let countriesIds = [];
@@ -93,6 +93,8 @@ export default {
 
             countriesIds.forEach(countryId => countryNames.push(countriesList[countryId]));
 
+            console.log("ids", countriesIds);
+            console.log("picked", countryNames);
             commit('SET_COUNTRIESLIST', countryNames);
         },
 
@@ -112,8 +114,6 @@ export default {
                 }
                 (!exclude) ? found.push(entry) : exclude = false;
             }
-
-            console.log("picked",found)
             commit('SET_EXCLUDEDLIST', found.map(x => x.alpha2Code));
         },
 
