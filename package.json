@@ -10,6 +10,7 @@
     "electron:build-mac": "vue-cli-service electron:build -m",
     "electron:build-win": "vue-cli-service electron:build -w",
     "electron:serve": "vue-cli-service electron:serve",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
@@ -18,11 +19,13 @@
     "core-js": "^3.6.5",
     "panzoom": "^9.4.2",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.22.3",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@intlify/vue-i18n-loader": "^1.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
@@ -36,6 +39,7 @@
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.6",
+    "vue-cli-plugin-i18n": "~2.1.0",
     "vue-cli-plugin-vuetify": "~2.3.1",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
