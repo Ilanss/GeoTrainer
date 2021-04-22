@@ -1,9 +1,5 @@
 <template>
     <v-container id="game" fluid>
-        <!--<v-row class="justify-center" no-gutter>
-            <v-col class="justify-center"><h2><span v-if="names">{{country[current].countryName}} </span><img v-if="flag" id="flag" v-bind:src="country[current].flag" alt=""></h2></v-col>
-            <v-col class="justify-center"><p>{{current + 1}}/{{country.length}}</p></v-col>
-        </v-row>-->
         <v-app-bar
                 app
                 dark
@@ -12,6 +8,7 @@
             <v-app-bar-nav-icon @click.stop="toggleMenu"></v-app-bar-nav-icon>
 
             <v-toolbar-title><h2>
+                <span>{{country[current].titleMode}} </span>
                 <span v-if="names">{{country[current].countryName}} </span>
                 <span v-else-if="capital">{{country[current].capital}} </span>
                 <span v-else-if="tldn">{{country[current].tldn[0]}} </span>
@@ -21,6 +18,7 @@
             <v-spacer></v-spacer>
 
             <p>{{current + 1}}/{{country.length}}</p>
+            <p>{{timer}}</p>
 
 
         </v-app-bar>
@@ -77,6 +75,7 @@
             return {
                 country: [{"alpha2Code":"XX","countryName":"empty","flag":"none"}],
                 excludedList: [],
+                titleMode: "countryName",
                 current:0,
                 countryFailed: [],
                 flag: true,
@@ -86,6 +85,7 @@
                 tldn: false,
                 score: 0,
                 skip: false,
+                timer: 0,
                 dialog: false,
             }
         },
@@ -147,6 +147,7 @@
             },
 
             endgame: function() {
+                clearInterval(this.interval);
                 this.dialog = true;
             },
 
@@ -155,6 +156,7 @@
                 this.country = this.$store.getters.countriesList;
                 this.current = 0;
                 this.score = 0;
+                this.interval = setInterval(() => this.timer++, 1000);
                 document.querySelectorAll('.true').forEach(item => item.classList.remove('true'));
                 document.querySelectorAll('.wrong').forEach(item => item.classList.remove('wrong'));
 
@@ -171,6 +173,26 @@
             this.flag = settings.flags;
             this.names = settings.names;
             this.capital = settings.capital;
+            switch (settings.titleMode) {
+                case "NamesFlags":
+                    this.titleMode = "countryName";
+                    this.flag = true;
+                    break;
+                case "Names":
+                    this.titleMode = "countryName";
+                    this.flag = false;
+                    break;
+                case "Flags":
+                    this.titleMode = "";
+                    this.flag = true;
+                    break;
+                case "capital":
+                    break;
+                case "tldn":
+                    break;
+                default:
+                    break;
+            }
             this.tldn = settings.tldn;
             this.redoWrong = settings.redoWrong;
             this.skip = settings.skip;

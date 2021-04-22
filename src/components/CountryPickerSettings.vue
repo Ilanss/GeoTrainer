@@ -16,9 +16,12 @@
         <h3>Mode des pays</h3>
         <v-layout class="justify-center">
             <v-radio-group v-model="settings.titleMode" row>
+                <v-radio label="Noms + Drapeaux" value="NamesFlags"></v-radio>
                 <v-radio label="Noms" value="Names"></v-radio>
                 <v-radio label="Drapeaux" value="Flags"></v-radio>
-                <v-radio label="Noms + Drapeaux" value="NamesFlags"></v-radio>
+                <v-radio label="Noms de domaine" value="tldn"></v-radio>
+                <v-radio label="Capitales" value="capital"></v-radio>
+                <v-radio label="Mix" value="mix"></v-radio>
             </v-radio-group>
         </v-layout>
 
@@ -32,8 +35,6 @@
                     <v-checkbox type="checkbox" id="skip" label="Passer au suivant avec une mauvaise réponse" name="skip" v-model="settings.skip"></v-checkbox>
                     <v-checkbox type="checkbox" id="redoWrong" label="Refaire les pays faux" name="redoWrong" v-model="settings.redoWrong"></v-checkbox>
                     <v-checkbox type="checkbox" id="smallCountry" label="Inclure les petits pays" name="smallCountry" v-model="settings.smallCountries" v-on:change="countryCount"></v-checkbox>
-                    <v-checkbox type="checkbox" id="capital" label="Mode capitale" name="capital" v-model="settings.capital"></v-checkbox>
-                    <v-checkbox type="checkbox" id="tldn" label="Mode nom de domaine" name="tldn" v-model="settings.tldn"></v-checkbox>
                 </v-expansion-panel-content></v-expansion-panel>
         </v-expansion-panels>
         <!--<div class="h2" v-b-toggle="'extras'"><h3>Autres options <b-icon-chevron-down width="16" height="16"></b-icon-chevron-down></h3></div>-->
@@ -51,7 +52,7 @@ export default {
         settings: {
             gamelength: 15,
             streetview:false,
-            titleMode: "Names",
+            titleMode: "NamesFlags",
             skip: false,
             redoWrong: false,
             smallCountries: false,
@@ -78,12 +79,34 @@ export default {
               case "Names":
                   settings.flags = false;
                   settings.names = true;
+                  settings.capital = false;
+                  settings.tldn = false;
                   break;
               case "Flags":
                   settings.flags = true;
                   settings.names = false;
+                  settings.capital = false;
+                  settings.tldn = false;
                   break;
               case "NamesFlags":
+                  settings.flags = true;
+                  settings.names = true;
+                  settings.capital = false;
+                  settings.tldn = false;
+                  break;
+              case "capital":
+                  settings.flags = false;
+                  settings.names = false;
+                  settings.capital = true;
+                  settings.tldn = false;
+                  break;
+              case "tldn":
+                  settings.flags = true;
+                  settings.names = true;
+                  settings.capital = false;
+                  settings.tldn = true;
+                  break;
+              case "mix":
                   settings.flags = true;
                   settings.names = true;
                   break;

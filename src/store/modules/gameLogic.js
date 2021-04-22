@@ -1,6 +1,7 @@
 export default {
     state:{
         gametype:"countryPicker",
+        titleMode:"NamesFlags",
         streakLength:0,
         gameLength:15,
         countriesList:[],
