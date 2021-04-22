@@ -1,26 +1,53 @@
 <template>
     <v-container id="game" fluid>
+        <v-navigation-drawer
+                v-model="drawer"
+                absolute
+                bottom
+                temporary
+        >
+            <v-list
+                    nav
+                    dense
+            >
+                <v-list-item-group>
+                    <v-list-item to="/">
+                        <v-list-item-title><v-icon>mdi-home</v-icon> Home</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item to="/settings">
+                        <v-list-item-title><v-icon>mdi-earth</v-icon> Jouer</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item to="/settings">
+                        <v-list-item-title><v-icon>mdi-cog</v-icon> Settings</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item to="/about">
+                        <v-list-item-title><v-icon>mdi-script-text </v-icon> Crédits</v-list-item-title>
+                    </v-list-item>
+
+                </v-list-item-group>
+            </v-list>
+        </v-navigation-drawer>
+
         <v-app-bar
                 app
                 dark
                 color="primary"
         >
-            <v-app-bar-nav-icon @click.stop="toggleMenu"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title><h2>
-                <span>{{country[current].titleMode}} </span>
-                <span v-if="names">{{country[current].countryName}} </span>
-                <span v-else-if="capital">{{country[current].capital}} </span>
-                <span v-else-if="tldn">{{country[current].tldn[0]}} </span>
+                <span v-if="titleMode != 'tldn'">{{country[current][titleMode]}} </span><span v-else>{{country[current][titleMode][0]}} </span>
                 <img v-if="flag" id="flag" v-bind:src="country[current].flag" alt="">
             </h2></v-toolbar-title>
 
             <v-spacer></v-spacer>
-
-            <p>{{current + 1}}/{{country.length}}</p>
-            <p>{{timer}}</p>
-
-
+                <div id="info">
+                    <p>{{current + 1}}/{{country.length}}</p>
+                    <p>{{Math.floor(timer/60).toString().padStart(2, '0')}}:{{(Math.floor(timer) % 60).toString().padStart(2, '0')}}</p>
+                </div>
         </v-app-bar>
 
         <Map />
@@ -79,14 +106,12 @@
                 current:0,
                 countryFailed: [],
                 flag: true,
-                names: true,
                 redoWrong: true,
-                capital: false,
-                tldn: false,
                 score: 0,
                 skip: false,
                 timer: 0,
                 dialog: false,
+                drawer: false,
             }
         },
         computed: {
@@ -153,7 +178,39 @@
 
             newgame: function() {
                 this.$store.dispatch('pickCountries');
-                this.country = this.$store.getters.countriesList;
+                if(this.titleMode == "mix"){
+                    this.country = this.$store.getters.countriesList.map(function (x) {
+                        let pick = Math.floor(Math.random() * 3);
+                        switch(pick){
+                            case 0:
+                                pick = "countryName";
+                                //return {alpha2Code: x.alpha2Code, countryName: x.name};
+                                break;
+                            case 1:
+                                pick = "capital";
+                                //return {alpha2Code: x.alpha2Code, countryName: x.capital};
+                                break;
+                            case 2:
+                                pick = "tldn";
+                                //return {alpha2Code: x.alpha2Code, countryName: x.tldn};
+                                break;
+                            default:
+                                pick = "countryName";
+                                //return {alpha2Code: x.alpha2Code, countryName: x.name};
+                                break;
+                        }
+                        if(pick == "tldn"){
+                            return {alpha2Code: x.alpha2Code, countryName: x[pick][0]}
+                        }
+                        else {
+                            return {alpha2Code: x.alpha2Code, countryName: x[pick]}
+                        }
+                    })
+                    this.titleMode = "countryName"
+                }
+                else {
+                    this.country = this.$store.getters.countriesList;
+                }
                 this.current = 0;
                 this.score = 0;
                 this.interval = setInterval(() => this.timer++, 1000);
@@ -164,38 +221,16 @@
 
         },
         mounted() {
-            this.newgame();
             let settings = this.$store.getters.getGameSettings;
             this.excludedList = settings.excludedList;
             if(settings.grey) {
                 settings.excludedList.forEach(x => document.getElementById(x).classList.add("grey"));
             }
             this.flag = settings.flags;
-            this.names = settings.names;
-            this.capital = settings.capital;
-            switch (settings.titleMode) {
-                case "NamesFlags":
-                    this.titleMode = "countryName";
-                    this.flag = true;
-                    break;
-                case "Names":
-                    this.titleMode = "countryName";
-                    this.flag = false;
-                    break;
-                case "Flags":
-                    this.titleMode = "";
-                    this.flag = true;
-                    break;
-                case "capital":
-                    break;
-                case "tldn":
-                    break;
-                default:
-                    break;
-            }
-            this.tldn = settings.tldn;
+            this.titleMode = settings.titleMode;
             this.redoWrong = settings.redoWrong;
             this.skip = settings.skip;
+            this.newgame();
             document.querySelectorAll('.land').forEach(item => item.addEventListener("click", this.countryCheck));
             return this.$store.getters.countriesList;
         }
@@ -207,6 +242,7 @@
     #game {
         height: 89vh;
         margin-top: 0px;
+        padding: 0;
         position: relative;
     }
     svg {
@@ -215,5 +251,8 @@
     }
     #flag {
         height: 35px;
+    }
+    #info>p {
+        margin-bottom: 0;
     }
 </style>

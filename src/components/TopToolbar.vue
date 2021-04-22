@@ -11,15 +11,19 @@
                     dense
             >
                 <v-list-item-group>
-                    <v-list-item>
+                    <v-list-item to="/">
+                        <v-list-item-title><v-icon>mdi-home</v-icon> Home</v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item to="/settings">
                         <v-list-item-title><v-icon>mdi-earth</v-icon> Jouer</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item>
+                    <v-list-item to="/settings">
                         <v-list-item-title><v-icon>mdi-cog</v-icon> Settings</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item>
+                    <v-list-item to="/about">
                         <v-list-item-title><v-icon>mdi-script-text </v-icon> Crédits</v-list-item-title>
                     </v-list-item>
 

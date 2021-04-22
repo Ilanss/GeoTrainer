@@ -1,7 +1,7 @@
 export default {
     state:{
         gametype:"countryPicker",
-        titleMode:"NamesFlags",
+        titleMode:"countryName",
         streakLength:0,
         gameLength:15,
         countriesList:[],
@@ -9,14 +9,11 @@ export default {
         excludedList:[],
         points:0,
         flag:true,
-        names: true,
         streetviewOnly:true,
         redoWrong:false,
         region: ['Asia', 'Europe', 'Americas', 'Oceania'],
         smallCountries: false,
         skip: false,
-        capital: false,
-        tldn: false,
         grey: false,
     },
     mutations: {
@@ -72,13 +69,9 @@ export default {
             state.grey = grey;
         },
 
-        SET_CAPITAL(state, capital) {
-            state.capital = capital;
+        SET_TITLEMODE(state, titleMode) {
+            state.titleMode = titleMode;
         },
-
-        SET_TLDN(state, tldn) {
-            state.tldn = tldn;
-        }
 
     },
 
@@ -178,8 +171,7 @@ export default {
             commit('SET_SMALLCOUNTRIES', settings.smallCountries);
             commit('SET_CAPITAL', settings.capital);
             commit('SET_REGIONS', settings.regions);
-            commit('SET_TLDN', settings.tldn);
-            commit('SET_SKIP', settings.skip);
+            commit('SET_TITLEMODE', settings.titleMode);
             commit('SET_GREY', settings.grey);
         }
 
@@ -198,8 +190,7 @@ export default {
             settings.flags = state.flag;
             settings.names = state.names;
             settings.skip = state.skip;
-            settings.capital = state.capital;
-            settings.tldn = state.tldn;
+            settings.titleMode = state.titleMode;
             settings.redoWrong = state.redoWrong;
             settings.smallCountries = state.smallCountries;
             settings.regions = state.region;

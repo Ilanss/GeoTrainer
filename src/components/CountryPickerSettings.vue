@@ -17,7 +17,7 @@
         <v-layout class="justify-center">
             <v-radio-group v-model="settings.titleMode" row>
                 <v-radio label="Noms + Drapeaux" value="NamesFlags"></v-radio>
-                <v-radio label="Noms" value="Names"></v-radio>
+                <v-radio label="Noms" value="countryName"></v-radio>
                 <v-radio label="Drapeaux" value="Flags"></v-radio>
                 <v-radio label="Noms de domaine" value="tldn"></v-radio>
                 <v-radio label="Capitales" value="capital"></v-radio>
@@ -75,51 +75,19 @@ export default {
           let settings = {};
           settings.gamelength = this.settings.gamelength;
           settings.streetview = this.settings.streetview;
-          switch (this.settings.titleMode) {
-              case "Names":
-                  settings.flags = false;
-                  settings.names = true;
-                  settings.capital = false;
-                  settings.tldn = false;
-                  break;
-              case "Flags":
-                  settings.flags = true;
-                  settings.names = false;
-                  settings.capital = false;
-                  settings.tldn = false;
-                  break;
-              case "NamesFlags":
-                  settings.flags = true;
-                  settings.names = true;
-                  settings.capital = false;
-                  settings.tldn = false;
-                  break;
-              case "capital":
-                  settings.flags = false;
-                  settings.names = false;
-                  settings.capital = true;
-                  settings.tldn = false;
-                  break;
-              case "tldn":
-                  settings.flags = true;
-                  settings.names = true;
-                  settings.capital = false;
-                  settings.tldn = true;
-                  break;
-              case "mix":
-                  settings.flags = true;
-                  settings.names = true;
-                  break;
-              default:
-                  settings.flags = true;
-                  settings.names = true;
-                  break;
+          if(this.settings.titleMode == "NamesFlags") {
+              settings.flags = true;
+              settings.titleMode = "countryName";
+          }
+          else if (this.settings.titleMode == "Flags"){
+              settings.flags = true;
+          }
+          else {
+              settings.titleMode = this.settings.titleMode;
           }
           settings.skip = this.settings.skip;
           settings.redoWrong = this.settings.redoWrong;
           settings.grey = this.settings.grey;
-          settings.capital = this.settings.capital;
-          settings.tldn = this.settings.tldn;
           settings.smallCountries = this.settings.smallCountries;
           settings.regions = this.prepareRegion();
           /*settings.regions = [];
