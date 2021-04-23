@@ -169,7 +169,7 @@ export default {
             commit('SET_STREETVIEW', settings.streetview);
             commit('SET_REDOWRONG', settings.redoWrong);
             commit('SET_SMALLCOUNTRIES', settings.smallCountries);
-            commit('SET_CAPITAL', settings.capital);
+            commit('SET_SKIP', settings.skip);
             commit('SET_REGIONS', settings.regions);
             commit('SET_TITLEMODE', settings.titleMode);
             commit('SET_GREY', settings.grey);
